@@ -25,7 +25,7 @@ const AreasScreen = ({navigation}) => {
             <Ionicons name="bulb-outline" size={40} color="white" />
             <Text style={styles.areaText}>Dormitorio</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.addCard}>
+          <TouchableOpacity onPress={() => navigation.navigate("Vincular")} style={styles.addCard}>
             <Ionicons name="add-outline" size={40} color="#6A1B9A" />
           </TouchableOpacity>
         </View>
