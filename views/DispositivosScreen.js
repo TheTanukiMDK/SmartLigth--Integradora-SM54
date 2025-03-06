@@ -39,6 +39,17 @@ const DispositivosScreen = ({ navigation }) => {
             </View>
           </TouchableOpacity>
         )}
+        ListFooterComponent={
+          <TouchableOpacity
+            style={[styles.card, styles.addCard]}
+            onPress={() => navigation.navigate("Vincular")}
+          >
+            <Ionicons name="add-circle-outline" size={40} color="black" />
+            <View style={styles.info}>
+              <Text style={styles.deviceName}>Agregar nuevo dispositivo</Text>
+            </View>
+          </TouchableOpacity>
+        }
       />
     </SafeAreaView>
   );
@@ -50,6 +61,7 @@ const styles = StyleSheet.create({
   greeting: { color: "white", fontSize: 18, fontWeight: "bold" },
   title: { fontSize: 20, fontWeight: "bold", textAlign: "center", marginVertical: 15 },
   card: { flexDirection: "row", backgroundColor: "#FAE1FF", padding: 15, borderRadius: 10, marginHorizontal: 20, marginBottom: 30, alignItems: "center", shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5 },
+  addCard: { backgroundColor: "#E0E0E0" },
   info: { marginLeft: 10 },
   deviceName: { fontSize: 16, fontWeight: "bold" },
   estado: { fontSize: 14, fontWeight: "bold" },
