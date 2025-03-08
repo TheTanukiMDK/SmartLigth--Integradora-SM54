@@ -7,6 +7,8 @@ import AreasScreen from "./views/AreasScreen";
 import DispositivosScreen from "./views/DispositivosScreen";
 import VincularScreen from "./views/VincularScreen";
 import ControlScreen from "./views/ControlScreen";
+import EstablecerHoraScreen from "./views/EstablecerHoraScreen";
+import PerfilUsuarioScreen from "./views/PerfilUsuarioScreen";
 
 const Stack = createStackNavigator();
 
@@ -20,6 +22,8 @@ export default function App() {
         <Stack.Screen name="Dispositivos" component={DispositivosScreen} />
         <Stack.Screen name="Vincular" component={VincularScreen} />
         <Stack.Screen name="Control" component={ControlScreen} />
+        <Stack.Screen name="EstablecerHora" component={EstablecerHoraScreen} />
+        <Stack.Screen name="Perfil" component={PerfilUsuarioScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

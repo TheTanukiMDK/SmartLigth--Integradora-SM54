@@ -18,7 +18,9 @@ const AreasScreen = ({navigation}) => {
     <SafeAreaView style={styles.safeContainer}>
       <View style={styles.header}>
         <Text style={styles.greeting}>Hola Ricardo!</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Perfil")}>
         <Ionicons name="person-circle-outline" size={40} color="white" />
+        </TouchableOpacity>
       </View>
       <ImageBackground
         source={{ uri: "https://laopinion.com/wp-content/uploads/sites/3/2020/08/pexels-vecislavas-popa-1743231.jpg?resize=1316,740&quality=80" }}

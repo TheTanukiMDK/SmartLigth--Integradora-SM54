@@ -1,24 +1,29 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, StatusBar } from "react-native";
 import { Ionicons } from "@expo/vector-icons"; // Asegúrate de tener @expo/vector-icons instalado
+import { useNavigation } from "@react-navigation/native";
 
 const Header = ({ title, onBackPress }) => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.header}>
-      {/* Botón de retroceso */}
-      <TouchableOpacity onPress={onBackPress} style={styles.backButton}>
+      {/* Botón de regreso */}
+      <TouchableOpacity onPress={onBackPress} style={styles.iconButton}>
         <Ionicons name="arrow-back" size={24} color="white" />
       </TouchableOpacity>
 
       {/* Título */}
       <Text style={styles.title}>{title}</Text>
 
-      {/* Espacio para equilibrar diseño */}
-       <Ionicons name="person-circle-outline" size={40} color="white" />
-      <View style={styles.spacer} />
+      {/* Icono de usuario */}
+      <TouchableOpacity onPress={() => navigation.navigate("Perfil")} style={styles.iconButton}>
+        <Ionicons name="person-circle-outline" size={30} color="white" />
+      </TouchableOpacity>
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   header: {

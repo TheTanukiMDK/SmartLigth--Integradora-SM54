@@ -19,7 +19,6 @@ const ControlScreen = ({ route, navigation }) => {
 
       {/* Título */}
       <Text style={styles.title}>{nombre}</Text>
-
       {/* Botón de encendido/apagado */}
       <TouchableOpacity onPress={toggleEstado} style={styles.powerButton}>
         <Ionicons name="power" size={300} color="black" />
@@ -31,7 +30,7 @@ const ControlScreen = ({ route, navigation }) => {
       </Text>
 
       {/* Botón para establecer hora */}
-      <TouchableOpacity style={styles.horaButton}>
+      <TouchableOpacity style={styles.horaButton}  onPress={() => navigation.navigate("EstablecerHora")}>
         <Text style={styles.horaText}>Establecer Hora</Text>
       </TouchableOpacity>
     </SafeAreaView>
