@@ -1,11 +1,28 @@
-import React from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { authService } from "../services/authService";
 
 const LoginScreen = () => {
     const navigation = useNavigation();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleLogin = async () => {
+        if (!email || !password) {
+            Alert.alert("Error", "Por favor complete todos los campos");
+            return;
+        }
+
+        const result = await authService.login(email, password);
+        if (result.success) {
+            navigation.navigate("Areas");
+        } else {
+            Alert.alert("Error", result.message || "Error al iniciar sesión");
+        }
+    };
 
     return (
         <LinearGradient colors={["#9b59b6", "#512DA8"]} style={styles.container}>
@@ -14,9 +31,22 @@ const LoginScreen = () => {
             </View>
             <View style={styles.card}>
                 <Text style={styles.title}>Inicio de sesión</Text>
-                <TextInput style={styles.input} placeholder="Correo Electrónico" />
-                <TextInput style={styles.input} placeholder="Contraseña" secureTextEntry />
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Areas")}>
+                <TextInput 
+                    style={styles.input} 
+                    placeholder="Correo Electrónico"
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                />
+                <TextInput 
+                    style={styles.input} 
+                    placeholder="Contraseña" 
+                    secureTextEntry
+                    value={password}
+                    onChangeText={setPassword}
+                />
+                <TouchableOpacity style={styles.button} onPress={handleLogin}>
                     <Text style={styles.buttonText}>Iniciar sesión</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate("Registro")}>

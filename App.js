@@ -1,14 +1,14 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import LoginScreen from "./views/LoginScreen";
-import RegisterScreen from "./views/RegisterScreen";
-import AreasScreen from "./views/AreasScreen";
-import DispositivosScreen from "./views/DispositivosScreen";
-import VincularScreen from "./views/VincularScreen";
-import ControlScreen from "./views/ControlScreen";
-import EstablecerHoraScreen from "./views/EstablecerHoraScreen";
-import PerfilUsuarioScreen from "./views/PerfilUsuarioScreen";
+import LoginScreen from "./src/screens/LoginScreen";
+import RegisterScreen from "./src/screens/RegisterScreen";
+import AreasScreen from "./src/screens/AreasScreen";
+import DispositivosScreen from "./src/screens/DispositivosScreen";
+import VincularScreen from "./src/screens/VincularScreen";
+import ControlScreen from "./src/screens/ControlScreen";
+import EstablecerHoraScreen from "./src/screens/EstablecerHoraScreen";
+import PerfilUsuarioScreen from "./src/screens/PerfilUsuarioScreen";
 
 const Stack = createStackNavigator();
 
