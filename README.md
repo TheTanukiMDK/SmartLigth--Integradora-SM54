@@ -1,12 +1,12 @@
 # 📌 Strade
 
 ## 📖 Índice
-1.⁠ ⁠📌 [Problemática](#problematica)
-2.⁠ ⁠🎯 [Objetivo General](#objetivo-general)
-3.⁠ ⁠👥 [Integrantes](#integrantes)
-4.⁠ ⁠📦 [Librerías Utilizadas](#librerias-utilizadas)
-5.⁠ ⁠⚙️ [Cómo Correr el Proyecto](#como-correr-el-proyecto)
-
+1. 📌 [Problemática](#problematica)
+2. 🎯 [Objetivo General](#objetivo-general)
+4. 👥 [Integrantes](#integrantes)
+5. 📦 [Librerías Utilizadas](#librerias-utilizadas)
+6. ⚙️ [Cómo Correr el Proyecto](#como-correr-el-proyecto)
+7. 📩 [Contacto](#contacto)
 
 ---
 
@@ -43,22 +43,28 @@ Desarrollar un sistema de iluminación inteligente controlada mediante una aplic
 ## ⚙️ Cómo ejecutar el proyecto 
 Asegúrate de tener instalado *Node.js* y *npm* en tu máquina. Luego, sigue estos pasos:
 
-⁠ bash
+
 # Clona el repositorio
-git clone https://github.com/AlexUT22393235/FrontEndProyectoFinal.git
-
+```bash
+git clone https://github.com/TheTanukiMDK/SmartLigth--Integradora-SM54.git
+```
 # Ingresa a la carpeta del proyecto
-cd FrontEndProyectoFinal
-
+```bash
+cd SmartLigth--Integradora-SM54
+```
 # Instala las dependencias
+```bash
 npm install
+```
 
 # Ejecuta el proyecto en modo desarrollo
+```bash
 npx expo start
+```
 
-#Escanea el QR con tu movil
+# Escanea el QR con tu movil
 
-#En caso de no tener la aplicacion de expo en tu celular, Descargala
+# En caso de no tener la aplicacion de expo en tu celular, Descargala
  ⁠
 
 ## 📩 Contacto
