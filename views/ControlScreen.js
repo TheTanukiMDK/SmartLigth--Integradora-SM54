@@ -1,12 +1,36 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../components/Header";
 import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 const ControlScreen = ({ route, navigation }) => {
   const { nombre, estadoInicial } = route.params;
   const [estado, setEstado] = useState(estadoInicial);
+  const [name, setName] = useState(""); // Estado para almacenar el nombre del usuario
+
+
+  // Cargar el nombre del usuario desde AsyncStorage
+  useEffect(() => {
+   const cargarNombreUsuario = async () => {
+     try {
+       const userData = await AsyncStorage.getItem("user"); // Recupera el objeto completo
+       if (userData) {
+         const user = JSON.parse(userData); // Convierte el JSON a un objeto
+         setName(user.name); // Extrae y establece el nombre
+       } else {
+         console.warn("No se encontraron datos de usuario en AsyncStorage.");
+       }
+     } catch (error) {
+       console.error("Error al cargar el nombre del usuario:", error);
+     }
+   };
+
+   cargarNombreUsuario();
+ }, []);
 
   const toggleEstado = () => {
     setEstado(estado === "Encendido" ? "Apagado" : "Encendido");
@@ -15,7 +39,7 @@ const ControlScreen = ({ route, navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-      <Header title="Hola Ricardo!" onBackPress={() => navigation.goBack()} />
+      <Header title={`Hola ${name || 'Usuario'}!`} onBackPress={() => navigation.goBack()} />
 
       {/* Título */}
       <Text style={styles.title}>{nombre}</Text>

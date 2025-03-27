@@ -1,20 +1,70 @@
-import React from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const RegisterScreen = () => {
     const navigation = useNavigation();
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+
+    const handleRegister = async () => {
+        if (!name || !email || !password || !confirmPassword) {
+            Alert.alert("Error", "Todos los campos son obligatorios.");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            Alert.alert("Error", "Las contraseñas no coinciden.");
+            return;
+        }
+
+        try {
+            const user = { name, email, password };
+            await AsyncStorage.setItem("user", JSON.stringify(user));
+            Alert.alert("Éxito", "Usuario registrado correctamente.");
+            navigation.goBack();
+        } catch (error) {
+            Alert.alert("Error", "Ocurrió un problema al registrar el usuario.");
+        }
+    };
 
     return (
         <LinearGradient colors={["#9b59b6", "#512DA8"]} style={styles.container}>
             <View style={styles.card}>
                 <Text style={styles.title}>Registro</Text>
-                <TextInput style={styles.input} placeholder="Nombre" />
-                <TextInput style={styles.input} placeholder="Correo Electrónico" />
-                <TextInput style={styles.input} placeholder="Contraseña" secureTextEntry />
-                <TextInput style={styles.input} placeholder="Confirmar Contraseña" secureTextEntry />
-                <TouchableOpacity style={styles.button}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Nombre"
+                    value={name}
+                    onChangeText={setName}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Correo Electrónico"
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Contraseña"
+                    secureTextEntry
+                    value={password}
+                    onChangeText={setPassword}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Confirmar Contraseña"
+                    secureTextEntry
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
+                />
+                <TouchableOpacity style={styles.button} onPress={handleRegister}>
                     <Text style={styles.buttonText}>Registrarme</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -24,6 +74,7 @@ const RegisterScreen = () => {
         </LinearGradient>
     );
 };
+
 
 const styles = StyleSheet.create({
     container: {

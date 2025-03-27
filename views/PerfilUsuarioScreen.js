@@ -1,33 +1,64 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Header from "../components/Header";
 import { Ionicons } from "@expo/vector-icons";
 
 const PerfilUsuarioScreen = ({ navigation }) => {
-    const [nombre, setNombre] = useState("Ricardo");
-    const [correo, setCorreo] = useState("ricardo4@gmail.com");
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+
+    // Cargar datos de la sesión desde AsyncStorage
+    useEffect(() => {
+        const cargarDatosSesion = async () => {
+            try {
+                const userData = await AsyncStorage.getItem("user"); // Recupera el objeto completo
+                if (userData) {
+                    const user = JSON.parse(userData); // Convierte el JSON a un objeto
+                    setName(user.name); // Extrae y establece el nombre
+                    setEmail(user.email); // Extrae y establece el correo
+                } else {
+                    console.warn("No se encontraron datos de usuario en AsyncStorage.");
+                }
+            } catch (error) {
+                console.error("Error al cargar los datos de la sesión:", error);
+            }
+        };
+
+        cargarDatosSesion();
+    }, []);
+
+    // Función para cerrar sesión
+    const cerrarSesion = async () => {
+        try {
+            await AsyncStorage.clear(); // Elimina todos los datos almacenados
+            navigation.navigate("Login"); // Redirige a la pantalla de inicio de sesión
+        } catch (error) {
+            Alert.alert("Error", "No se pudo cerrar la sesión. Inténtalo de nuevo.");
+        }
+    };
 
     return (
         <SafeAreaView style={styles.container}>
             {/* Header */}
-            <Header title="Hola Ricardo!" onBackPress={() => navigation.goBack()} />
+            <Header title={`Hola ${name || 'Usuario'}!`} onBackPress={() => navigation.goBack()} />
 
             <View style={styles.content}>
                 {/* Tarjeta de usuario */}
                 <View style={styles.profileCard}>
                     <Ionicons name="person-circle-outline" size={50} color="white" />
-                    <Text style={styles.email}>{correo}</Text>
+                    <Text style={styles.email}>{email}</Text>
                 </View>
 
                 {/* Formulario de perfil */}
                 <Text style={styles.label}>Nombre</Text>
-                <TextInput style={styles.input} value={nombre} onChangeText={setNombre} />
+                <TextInput style={styles.input} value={name} onChangeText={setName} />
 
                 <Text style={styles.label}>Correo Electrónico</Text>
-                <TextInput style={styles.input} value={correo} onChangeText={setCorreo} keyboardType="email-address" />
+                <TextInput style={styles.input} value={email} onChangeText={setEmail} keyboardType="email-address" />
 
                 <Text style={styles.label}>Contraseña</Text>
                 <TextInput
@@ -52,7 +83,7 @@ const PerfilUsuarioScreen = ({ navigation }) => {
                     <Text style={styles.buttonText}>Actualizar</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.logoutButton} onPress={() => navigation.navigate("Login")}>
+                <TouchableOpacity style={styles.logoutButton} onPress={cerrarSesion}>
                     <Text style={styles.buttonText}>Cerrar Sesión</Text>
                 </TouchableOpacity>
             </View>

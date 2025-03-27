@@ -1,11 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Modal, TextInput, Button } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AreasScreen = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [areaName, setAreaName] = useState("");
+  const [name, setName] = useState(""); // Estado para almacenar el nombre del usuario
+
+
+   // Cargar el nombre del usuario desde AsyncStorage
+   useEffect(() => {
+    const cargarNombreUsuario = async () => {
+      try {
+        const userData = await AsyncStorage.getItem("user"); // Recupera el objeto completo
+        if (userData) {
+          const user = JSON.parse(userData); // Convierte el JSON a un objeto
+          setName(user.name); // Extrae y establece el nombre
+        } else {
+          console.warn("No se encontraron datos de usuario en AsyncStorage.");
+        }
+      } catch (error) {
+        console.error("Error al cargar el nombre del usuario:", error);
+      }
+    };
+
+    cargarNombreUsuario();
+  }, []);
 
   const handleAddArea = () => {
     // Aquí puedes manejar la lógica para agregar el área
@@ -17,7 +39,7 @@ const AreasScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.safeContainer}>
       <View style={styles.header}>
-        <Text style={styles.greeting}>Hola Ricardo!</Text>
+        <Text style={styles.greeting} >{`Hola ${name || 'Usuario'}!`}</Text>
         <TouchableOpacity onPress={() => navigation.navigate("Perfil")}>
         <Ionicons name="person-circle-outline" size={40} color="white" />
         </TouchableOpacity>
