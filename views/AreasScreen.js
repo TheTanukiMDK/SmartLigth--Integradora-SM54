@@ -4,14 +4,23 @@ import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const AreasScreen = ({navigation}) => {
+const AreasScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [areaName, setAreaName] = useState("");
   const [name, setName] = useState(""); // Estado para almacenar el nombre del usuario
+  const [dynamicAreas, setDynamicAreas] = useState([]); // Estado para áreas dinámicas
 
-
-   // Cargar el nombre del usuario desde AsyncStorage
-   useEffect(() => {
+  const handleAddArea = () => {
+    if (areaName.trim() !== "") {
+      setDynamicAreas([...dynamicAreas, areaName]); // Agrega el área al estado dinámico
+      setModalVisible(false);
+      setAreaName("");
+    } else {
+      console.warn("El nombre del área no puede estar vacío.");
+    }
+  };
+  // Cargar el nombre del usuario desde AsyncStorage
+  useEffect(() => {
     const cargarNombreUsuario = async () => {
       try {
         const userData = await AsyncStorage.getItem("user"); // Recupera el objeto completo
@@ -29,19 +38,14 @@ const AreasScreen = ({navigation}) => {
     cargarNombreUsuario();
   }, []);
 
-  const handleAddArea = () => {
-    // Aquí puedes manejar la lógica para agregar el área
-    console.log("Nombre del área:", areaName);
-    setModalVisible(false);
-    setAreaName("");
-  };
+
 
   return (
     <SafeAreaView style={styles.safeContainer}>
       <View style={styles.header}>
         <Text style={styles.greeting} >{`Hola ${name || 'Usuario'}!`}</Text>
         <TouchableOpacity onPress={() => navigation.navigate("Perfil")}>
-        <Ionicons name="person-circle-outline" size={40} color="white" />
+          <Ionicons name="person-circle-outline" size={40} color="white" />
         </TouchableOpacity>
       </View>
       <ImageBackground
@@ -51,17 +55,37 @@ const AreasScreen = ({navigation}) => {
       <View style={styles.areasContainer}>
         <Text style={styles.areasTitle}>Áreas</Text>
         <View style={styles.areasRow}>
-          <TouchableOpacity style={styles.areaCard} onPress={() => navigation.navigate("Dispositivos")}>
-            <Ionicons name="bulb-outline" size={40} color="white" />
-            <Text style={styles.areaText}>Cocina</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.areaCard} >
-            <Ionicons name="bulb-outline" size={40} color="white" />
-            <Text style={styles.areaText}>Dormitorio</Text>
-          </TouchableOpacity>
+        <TouchableOpacity
+  style={styles.areaCard}
+  onPress={() => navigation.navigate("Dispositivos", { areaName: "Cocina" })}
+>
+  <Ionicons name="bulb-outline" size={40} color="white" />
+  <Text style={styles.areaText}>Cocina</Text>
+</TouchableOpacity>
+
+<TouchableOpacity
+  style={styles.areaCard}
+  onPress={() => navigation.navigate("Dispositivos", { areaName: "Dormitorio" })}
+>
+  <Ionicons name="bulb-outline" size={40} color="white" />
+  <Text style={styles.areaText}>Dormitorio</Text>
+</TouchableOpacity>
+
+{/* Áreas dinámicas */}
+{dynamicAreas.map((area, index) => (
+  <TouchableOpacity
+    key={index}
+    style={styles.areaCard}
+    onPress={() => navigation.navigate("Dispositivos", { areaName: area })}
+  >
+    <Ionicons name="bulb-outline" size={40} color="white" />
+    <Text style={styles.areaText}>{area}</Text>
+  </TouchableOpacity>
+))}
           <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.addCard}>
             <Ionicons name="add-outline" size={40} color="#6A1B9A" />
           </TouchableOpacity>
+
         </View>
       </View>
       <Modal
@@ -95,14 +119,36 @@ const styles = StyleSheet.create({
   image: { width: "100%", height: 200 },
   areasContainer: { padding: 20 },
   areasTitle: { fontSize: 18, fontWeight: "bold" },
-  areasRow: { flexDirection: "row", marginTop: 10, gap: 10 },
-  areaCard: { backgroundColor: "#6A1B9A", padding: 20, borderRadius: 10, alignItems: "center", flex: 1 },
+  areasRow: {
+    flexDirection: "row",
+    flexWrap: "wrap", // Permite que los elementos se envuelvan a la siguiente fila
+    marginTop: 10,
+    gap: 10, // Espaciado entre los elementos
+  },
+  areaCard: {
+    backgroundColor: "#6A1B9A",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
+    flexBasis: "30%", // Cada tarjeta ocupa aproximadamente un tercio del ancho
+    marginBottom: 10, // Espaciado vertical entre filas
+  },
   areaText: { color: "white", marginTop: 5 },
-  addCard: { borderWidth: 2, borderColor: "#6A1B9A", padding: 20, borderRadius: 10, alignItems: "center", flex: 1, borderStyle: "dashed" },
+  addCard: {
+    borderWidth: 2,
+    borderColor: "#6A1B9A",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
+    flexBasis: "30%", // Misma proporción que las tarjetas de área
+    borderStyle: "dashed",
+    marginBottom: 10, // Espaciado vertical entre filas
+  },
   modalContainer: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0,0,0,0.5)" },
   modalView: { width: 300, padding: 20, backgroundColor: "white", borderRadius: 10, alignItems: "center" },
   modalTitle: { fontSize: 18, fontWeight: "bold", marginBottom: 10 },
   input: { width: "100%", padding: 10, borderWidth: 1, borderColor: "#ccc", borderRadius: 5, marginBottom: 10 },
+  
 });
 
 export default AreasScreen;
